@@ -1,0 +1,7 @@
+.env
+outbox/*
+!outbox/.gitkeep
+outreach_state/*
+!outreach_state/.gitkeep
+__pycache__/
+.pytest_cache/
