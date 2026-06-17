@@ -32,6 +32,13 @@ manufacturing.
   and supports `/status`, `/sync_cal`, `/doctor`, and `/help`.
 - Local `.env`: created with restricted permissions and ignored by Git.
 - Confirmed meetings in tracker: 0 of 4.
+- Cloudflare Worker deployed for 24/7 operation:
+  `https://rocasis-agent.miguelcedillo.workers.dev`.
+- Cloudflare D1 database created and seeded: `rocasis-agent-db`.
+- Cloudflare cron schedule:
+  - every 15 minutes: Cal.com booking sync.
+  - hourly at minute 7: Resend delivery sync.
+  - daily at 15:20 UTC: due follow-ups, limited to 10 per run.
 
 ## External Credential Check
 
@@ -56,7 +63,7 @@ is not enabled in this Resend account, so the first wave used
 
 1. Sync Cal.com bookings or run the webhook receiver until 4 meetings are
    confirmed.
-2. Send due follow-ups on or after 2026-06-06 if no bookings are confirmed.
+2. Send due follow-ups from Cloudflare or wait for the daily scheduled run.
 3. Continue the cadence until the tracker shows 4 confirmed meetings.
 
 Latest Cal.com sync with provided API key returned 0 upcoming bookings, 0

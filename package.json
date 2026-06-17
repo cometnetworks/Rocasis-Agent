@@ -1,0 +1,19 @@
+{
+  "name": "rocasis-sales-agent",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "cf:dev": "wrangler dev",
+    "cf:deploy": "wrangler deploy",
+    "cf:types": "wrangler types",
+    "cf:migrate:local": "wrangler d1 migrations apply rocasis-agent-db --local",
+    "cf:migrate:remote": "wrangler d1 migrations apply rocasis-agent-db --remote",
+    "cf:seed": "node scripts/tracker-csv-to-d1-sql.mjs outreach_state/rocasis_outreach_tracker.csv outbox/tracker-seed.sql"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260617.0",
+    "typescript": "^5.9.0",
+    "wrangler": "^4.101.0"
+  }
+}

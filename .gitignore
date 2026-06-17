@@ -5,3 +5,6 @@ outreach_state/*
 !outreach_state/.gitkeep
 __pycache__/
 .pytest_cache/
+node_modules/
+.wrangler/
+worker-configuration.d.ts

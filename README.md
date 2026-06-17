@@ -162,6 +162,68 @@ Ver avance:
 python3 agent.py status
 ```
 
+## Cloudflare 24/7
+
+El agente tambien puede correr en Cloudflare Workers con D1 para no depender
+de una terminal local.
+
+Worker desplegado:
+
+```text
+https://rocasis-agent.miguelcedillo.workers.dev
+```
+
+Endpoints:
+
+```bash
+curl https://rocasis-agent.miguelcedillo.workers.dev/status
+curl -X POST "https://rocasis-agent.miguelcedillo.workers.dev/admin/run?task=sync-cal" \
+  -H "x-rocasis-admin-secret: $ADMIN_SECRET"
+curl -X POST "https://rocasis-agent.miguelcedillo.workers.dev/admin/run?task=sync-resend" \
+  -H "x-rocasis-admin-secret: $ADMIN_SECRET"
+curl -X POST "https://rocasis-agent.miguelcedillo.workers.dev/admin/run?task=followups" \
+  -H "x-rocasis-admin-secret: $ADMIN_SECRET"
+```
+
+Cron remoto:
+
+- Cada 15 minutos: sincroniza bookings de Cal.com.
+- Minuto 7 de cada hora: sincroniza estados de entrega desde Resend.
+- 15:20 UTC diario: envia follow-ups vencidos, maximo 10 por corrida.
+
+Estado persistente:
+
+- D1 database: `rocasis-agent-db`.
+- Tabla principal: `outreach_tracker`.
+- El CSV local sigue existiendo como respaldo operativo, pero el Worker usa D1.
+
+Comandos Cloudflare:
+
+```bash
+npm install
+npm run cf:migrate:remote
+npm run cf:seed
+npx wrangler d1 execute rocasis-agent-db --remote --file outbox/tracker-seed.sql
+npm run cf:deploy
+```
+
+Secretos requeridos en Cloudflare:
+
+```text
+RESEND_API_KEY
+CAL_API_KEY
+TELEGRAM_BOT_TOKEN
+TELEGRAM_CHAT_ID
+CAL_WEBHOOK_SECRET
+ADMIN_SECRET
+```
+
+Webhook de Cal.com en nube:
+
+```text
+POST https://rocasis-agent.miguelcedillo.workers.dev/cal-webhook?secret=CAL_WEBHOOK_SECRET
+```
+
 Registrar una reunion confirmada manualmente:
 
 ```bash

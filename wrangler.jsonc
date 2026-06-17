@@ -1,0 +1,24 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "rocasis-agent",
+  "main": "src/cloudflare-worker.ts",
+  "compatibility_date": "2026-06-17",
+  "triggers": {
+    "crons": ["*/15 * * * *", "7 * * * *", "20 15 * * *"]
+  },
+  "vars": {
+    "CAL_LINK": "https://cal.com/rocasis",
+    "CAL_API_VERSION": "2026-05-01",
+    "TARGET_MEETINGS": "4",
+    "FROM_EMAIL": "Miguel Cedillo <miguel@outreach.voxmedia.com.mx>",
+    "REPLY_TO": "marketing.voxmedia@gmail.com",
+    "MAX_FOLLOWUPS_PER_RUN": "10"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "rocasis-agent-db",
+      "database_id": "5aee719e-0f87-4474-a83d-b7811719eb6a"
+    }
+  ]
+}
