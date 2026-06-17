@@ -148,7 +148,7 @@ class AgentTests(unittest.TestCase):
 
     def test_resend_key_validation(self):
         self.assertTrue(agent.validate_resend_api_key("re_1234567890"))
-        self.assertFalse(agent.validate_resend_api_key("9ce595d073a7354e05d5d77ea612f102c807be6c3"))
+        self.assertFalse(agent.validate_resend_api_key("not-a-resend-api-key"))
 
     def test_default_reply_to_is_marketing_inbox(self):
         self.assertEqual(agent.DEFAULT_REPLY_TO, "marketing.voxmedia@gmail.com")
